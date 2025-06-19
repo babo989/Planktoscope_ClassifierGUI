@@ -31,6 +31,9 @@ Helpful Resources:
 Author: [Adam Larson]
 Date: [4.1.2025]
 Version: 1.0
+
+History:
+[Daniel Elnatan] 4.10.2026 - swapped to using qtpy
 """
 
 import os
@@ -43,13 +46,22 @@ from collections import Counter
 import tensorflow_hub as hub
 from sklearn.utils.class_weight import compute_class_weight
 
-from PyQt5.QtWidgets import (
+# from PyQt5.QtWidgets import (
+#     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
+#     QFileDialog, QGridLayout, QScrollArea, QMessageBox, QSpinBox, QInputDialog, QCheckBox,
+#     QApplication, QMainWindow, QProgressBar
+# )
+# from PyQt5.QtGui import QPixmap, QImage, QColor
+# from PyQt5.QtCore import Qt, QThread, pyqtSignal
+
+from qtpy.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QFileDialog, QGridLayout, QScrollArea, QMessageBox, QSpinBox, QInputDialog, QCheckBox,
     QApplication, QMainWindow, QProgressBar
 )
-from PyQt5.QtGui import QPixmap, QImage, QColor
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from qtpy.QtGui import QPixmap, QImage, QColor
+from qtpy.QtCore import Qt, QThread, Signal # Note: pyqtSignal is standardized to Signal
+
 
 from keras.utils import get_custom_objects
 get_custom_objects()['KerasLayer'] = hub.KerasLayer
@@ -67,8 +79,8 @@ class TrainModelThread(QThread):
         finished (str): Emitted when training completes with model path or error message
         progress (str): Emitted to provide status updates during training
     """
-    finished = pyqtSignal(str)
-    progress = pyqtSignal(str) 
+    finished = Signal(str)
+    progress = Signal(str) 
 
     def __init__(self, data_dir, model_out, img_size=(224, 224), batch_size=32, epochs=15, export_trt=False):
         super().__init__()
@@ -327,8 +339,8 @@ class TrainModelThread(QThread):
 
 
 class PredictThread(QThread):
-    prediction_complete = pyqtSignal(list)
-    progress = pyqtSignal(int)  # Progress indicator (0-100)
+    prediction_complete = Signal(list)
+    progress = Signal(int)  # Progress indicator (0-100)
 
     def __init__(self, model_path, class_file, image_paths, img_size=(224, 224)):
         super().__init__()

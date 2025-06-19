@@ -1,0 +1,67 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"] # Specifies the minimum version of setuptools needed
+build-backend = "setuptools.build_meta" # Tells pip/build tools to use setuptools
+
+[project]
+name = "your-package-name" # The name used for pip install (use dashes)
+version = "0.1.0" # Initial version - follow semantic versioning (https://semver.org/)
+authors = [
+  { name="Your Name", email="your.email@example.com" },
+  # Add others if applicable
+]
+description = "A short description of your amazing package."
+readme = "README.md" # Specifies the file for the long description on PyPI
+requires-python = ">=3.9" # Minimum Python version compatibility (adjust if needed based on deps)
+license = { file="LICENSE" } # Points to your license file
+classifiers = [
+    "Development Status :: 3 - Alpha", # Or Beta, Production/Stable
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License", # *CHANGE THIS* to your chosen license
+    "Operating System :: MacOS :: MacOS X",   # Be specific due to tensorflow-macos/metal
+    "Operating System :: POSIX :: Linux",    # Add if you test/support Linux
+    "Operating System :: Microsoft :: Windows",# Add if you test/support Windows
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    # Add other relevant classifiers from: https://pypi.org/classifiers/
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+]
+keywords = ["python", "package", "example", "science"] # Optional keywords for discovery
+
+# --- Your Dependencies ---
+dependencies = [
+    "pyqt6",
+    "qtpy",  
+    "scipy == 1.10.1",
+    "tensorflow-hub == 0.12.0",
+    "scikit-learn == 1.2.2",
+    "scikit-image == 0.20.0",
+    "pillow == 9.5.0",
+    "matplotlib == 3.7.1",
+    "pandas == 2.0.1",
+    "numpy >= 1.24.0, < 1.25.0",
+    "opencv-python",            # No version specified, will get the latest compatible
+
+    # Platform-specific TensorFlow for Apple Silicon Macs
+    "tensorflow-macos == 2.10.0; sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "tensorflow-metal == 0.6.0; sys_platform == 'darwin' and platform_machine == 'arm64'",
+
+    # Add standard TensorFlow for other platforms if needed/supported
+    # "tensorflow == 2.10.0; sys_platform != 'darwin' or platform_machine != 'arm64'", # Example
+]
+
+#[project.urls] # Optional: Links displayed on PyPI
+#"Homepage" = "https://github.com/your_username/your_project_repository"
+#"Bug Tracker" = "https://github.com/your_username/your_project_repository/issues"
+#"Repository" = "https://github.com/your_username/your_project_repository.git"
+
+# --- Optional: Configure Setuptools ---
+# You might need this section later for more advanced things like C extensions
+# or including non-code data files. For simple pure-Python, it's often not needed.
+# [tool.setuptools.packages.find]
+# where = ["src"] # Tells setuptools where to find packages (using src layout)

@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 """
 PLanktoscope Classifier - Main Application
 -----------------------------------------------------------
@@ -15,13 +15,23 @@ This is the main entry point of the application that sets up the UI.
 Author: [Adam Larson]
 Date: [4.1.2025]
 Version: 1.0
+
+History:
+[Daniel Elnatan] 4.10.2026 - swapped to using qtpy
 """
 
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QAction, QFileDialog, QMessageBox
+
+# DEPRECATED
+# from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget, QAction, QFileDialog, QMessageBox
+from gui_integration import ChainClassifierWidget
+
+from qtpy.QtWidgets import QApplication, QMainWindow, QTabWidget, QAction, QFileDialog, QMessageBox
+
 from raw_mode import RawModePanel
 from segmented_mode import SegmentedModePanel
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -40,6 +50,9 @@ class MainWindow(QMainWindow):
         # Add them as tabs
         self.tab_widget.addTab(self.raw_mode_panel, "Raw Images")
         self.tab_widget.addTab(self.segmented_mode_panel, "Segmented Objects")
+
+        self.chain_classifier_widget = ChainClassifierWidget()
+        self.tab_widget.addTab(self.chain_classifier_widget, "Chain Classifier")
 
         # Menu for global actions
         self._create_menus()

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Model files (too large for git)
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+
+# Test files
+test_*.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

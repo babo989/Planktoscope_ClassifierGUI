@@ -25,6 +25,19 @@ A GUI application for processing and classifying microscopy images from Planktos
 
 ## Installation
 
+In this fork, you should be able clone the repo:
+
+```bash
+git clone https://github.com/delnatan/Planktoscope_ClassifierGUI.git
+```
+go into the `Planktoscope_ClassifierGUI` then just run pip install from the directory:
+
+```bash
+pip install -e .
+```
+
+The `-e` flag is not necessary, but would allow one to modify the repo to make development easier.
+
 ### Requirements
 
 - Python 3.10 recommended

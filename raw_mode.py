@@ -11,6 +11,9 @@ It allows users to:
 Author: [Adam Larson]
 Date: [4.1.2025]
 Version: 1.0
+
+History:
+[Daniel Elnatan] 4.10.2026 - swapped to using qtpy
 """
 
 import os
@@ -25,14 +28,26 @@ from datetime import datetime
 from scipy import ndimage
 from skimage import measure, morphology, color
 
-from PyQt5.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
+# OLD
+# from PyQt5.QtWidgets import (
+#     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
+#     QListWidget, QFileDialog, QMessageBox, QProgressBar,
+#     QSplitter, QTextEdit, QGroupBox, QCheckBox, QSpinBox,
+#     QDoubleSpinBox, QFormLayout, QSlider, QScrollArea, QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QTabWidget
+# )
+# from PyQt5.QtGui import QPixmap, QImage, QPainter, QColor, QPen
+# from PyQt5.QtCore import Qt, QSize, QThread, pyqtSignal, QRect
+
+from qtpy.QtWidgets import (
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QListWidget, QFileDialog, QMessageBox, QProgressBar,
     QSplitter, QTextEdit, QGroupBox, QCheckBox, QSpinBox,
-    QDoubleSpinBox, QFormLayout, QSlider, QScrollArea, QGraphicsView, QGraphicsScene, QGraphicsPixmapItem, QTabWidget
+    QDoubleSpinBox, QFormLayout, QSlider, QScrollArea, QGraphicsView,
+    QGraphicsScene, QGraphicsPixmapItem, QTabWidget
 )
-from PyQt5.QtGui import QPixmap, QImage, QPainter, QColor, QPen
-from PyQt5.QtCore import Qt, QSize, QThread, pyqtSignal, QRect
+from qtpy.QtGui import QPixmap, QImage, QPainter, QColor, QPen
+from qtpy.QtCore import Qt, QSize, QThread, Signal, QRect
+
 
 from keras.utils import get_custom_objects
 get_custom_objects()['KerasLayer'] = hub.KerasLayer
@@ -40,10 +55,10 @@ get_custom_objects()['KerasLayer'] = hub.KerasLayer
 
 class SegmentThread(QThread):
     """Worker thread for image segmentation."""
-    progress = pyqtSignal(int)
-    status = pyqtSignal(str)
-    result = pyqtSignal(object, object, list)  # Original image, segmentation mask, object metadata list
-    finished_all = pyqtSignal(str, int)  # Output folder, object count
+    progress = Signal(int)
+    status = Signal(str)
+    result = Signal(object, object, list)  # Original image, segmentation mask, object metadata list
+    finished_all = Signal(str, int)  # Output folder, object count
     
     def __init__(self, image_paths, output_folder, params=None):
         super().__init__()
@@ -334,8 +349,8 @@ class SegmentThread(QThread):
 
 class ClassifySegmentedThread(QThread):
     """Worker thread for classifying segmented Planktoscope objects."""
-    progress = pyqtSignal(int)
-    result = pyqtSignal(list)  # List of (object_id, class, confidence) tuples
+    progress = Signal(int)
+    result = Signal(list)  # List of (object_id, class, confidence) tuples
     
     def __init__(self, model, class_names, objects_metadata):
         super().__init__()
